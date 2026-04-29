@@ -1,0 +1,1 @@
+Welcome to my ECE 2168 Final Project. This project aims to use a simulation of a DVS (dynamic vision sensor) and a neuromorphic implementation of DBSCAN (https://arxiv.org/pdf/2409.14298) to detect object motion.
