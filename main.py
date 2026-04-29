@@ -17,9 +17,11 @@ MIN_SAMPLES    = 15
 MAX_MATCH_DIST = 10.0
 EDGE_PAIR_DIST = 20.0   # max distance to consider ON/OFF edges same object
 DISP_THRESH    = 5.0
+CAMERA_PATH = 0
+VIDEO_PATH = "path/to/video.mp4"
 
 # --- Camera setup ---
-cam = cv2.VideoCapture(0)
+cam = cv2.VideoCapture(CAMERA_PATH)
 cam.set(cv2.CAP_PROP_FRAME_WIDTH,  320)
 cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
 centroids = np.zeros((48, 64), dtype=np.uint8)
