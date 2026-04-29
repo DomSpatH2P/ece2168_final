@@ -2,10 +2,7 @@ import numpy as np
 from scipy.ndimage import label, center_of_mass, convolve
 
 
-global t
-#where we were at: Core(T) += C(T) when it should be C(T-1)
-#also makes sure it fires if its a core event
-#suggestion: 
+global t 
 
 class SnnDbscan: # Neuromorphic DBSCAN implementing Rizzo & Plank 2024's systolic algorithm
     
@@ -15,7 +12,7 @@ class SnnDbscan: # Neuromorphic DBSCAN implementing Rizzo & Plank 2024's systoli
         self.eps = eps
         self.min_pts = min_pts
         
-        # Neighborhood kernel: (2eps+1) × (2eps+1), all ones, center zeroed
+        # Neighborhood kernel: (2eps+1) * (2eps+1), all ones, center zeroed
         # Used for counting neighbor spikes excluding self
         size = 2 * eps + 1
         self.kernel = np.ones((size, size), dtype=np.uint8)
@@ -28,13 +25,11 @@ class SnnDbscan: # Neuromorphic DBSCAN implementing Rizzo & Plank 2024's systoli
         size = 2 * eps + 1
         #Because the neurons have discrete voltages and thresholds and zero leaks, we interpret them as arrays for less overhead
 
-        # Shift-register buffers for I and Core neuron populations
+        # Shift-register buffers for I and Core neurons
         self.i_buf    = np.zeros((R, size), dtype=np.uint8)
         self.core_buf = np.zeros((R, size), dtype=np.uint8)
         
-        # Delay-1 buffers for one-to-one synapses where source and dest
-        # are both updated in the same step. We need explicit storage to
-        # carry the spike across to the next timestep.
+        # delay = 1 buffers
         self.delay_c_to_core   = np.zeros(R, dtype=np.uint8)  # C → Core
         self.delay_b_to_border = np.zeros(R, dtype=np.uint8)  # B → Border
         
