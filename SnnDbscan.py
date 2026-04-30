@@ -132,10 +132,10 @@ class SnnDbscan: # Neuromorphic DBSCAN implementing Rizzo & Plank 2024's systoli
         return core_mask, border_mask, b_mask
 
 
-def get_clusters(cluster_pixels,min_pts): #turn clusters into labeled groups
-    if len(cluster_pixels) < min_pts:
+def get_clusters(cluster_pixels,b,min_pts): #turn clusters into labeled groups
+    if len(cluster_pixels | b) < min_pts:
         return {}
-    labeled, num_features = label(cluster_pixels)
+    labeled, num_features = label(cluster_pixels | b)
     if num_features == 0:
         return []
     centroids = center_of_mass(cluster_pixels, labeled,
