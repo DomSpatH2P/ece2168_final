@@ -120,14 +120,14 @@ class SnnDbscan: # Neuromorphic DBSCAN implementing Rizzo & Plank 2024's systoli
             core_col = t - self.eps - 2
             if 0 <= core_col < self.C:
                 core_mask[:, core_col] = core_spikes
+
+            b_col = t - 2 * self.eps - 3
+            if 0 <= b_col < self.C:
+                b_mask[:,b_col] = b_spikes
             
             border_col = t - 2 * self.eps - 4
             if 0 <= border_col < self.C:
                 border_mask[:, border_col] = border_spikes
-
-            b_col = t - self.eps - 3
-            if 0 <= b_col < self.C:
-                b_mask[:,b_col] = b_spikes
         
         return core_mask, border_mask, b_mask
 
@@ -144,14 +144,14 @@ def get_clusters(cluster_pixels,b,min_pts): #turn clusters into labeled groups; 
 
 
 if __name__ == "__main__":
-    model = SnnDbscan(6, 6, 2, 4)
+    model = SnnDbscan(6, 6, 1, 4)
     sample = np.array([[0, 0, 0, 0, 0, 1],
                        [1, 0, 1, 1, 0, 0],
                        [0, 1, 0, 0, 0, 0],
                        [1, 1, 1, 0, 0, 0],
                        [0, 0, 1, 0, 1, 1],
                        [0, 0, 0, 1, 0, 0]])
-    core_mask, border_mask = model.run(sample)
+    core_mask, border_mask, b_mask = model.run(sample)
     print("Sample")
     print(sample)
     print("Core")
@@ -160,8 +160,12 @@ if __name__ == "__main__":
     print(border_mask)
     print("Core and Border")
     print(core_mask | border_mask)
+    print("Border-Core")
+    print(b_mask)
+    print("Incorrect Clusters")
+    print(get_clusters(core_mask | border_mask,0,4))
     print("Clusters")
-    print(get_clusters(core_mask | border_mask,1))
+    print(get_clusters(core_mask | border_mask,b_mask,4))
 
 '''
 Expected output:

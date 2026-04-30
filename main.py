@@ -132,10 +132,10 @@ while True:
     if(NEUROMORPHIC):
         on_core, on_border, on_b = dbscan.run(on_pts)
         on_mask = (on_core | on_border)
-        on_centroids = get_clusters(on_mask,1,MIN_SAMPLES)
+        on_centroids = get_clusters(on_mask,on_b,MIN_SAMPLES)
         off_core, off_border, off_b = dbscan.run(off_pts)
         off_mask = (off_core | off_border)
-        off_centroids = get_clusters(off_mask,1,MIN_SAMPLES)
+        off_centroids = get_clusters(off_mask,off_b,MIN_SAMPLES)
         cv2.imshow("neuromorphic mask",cv2.resize(127+(127*on_mask)-(127*off_mask),(320, 240), interpolation=cv2.INTER_NEAREST))
     else:
         traditional_mask.fill(0)
