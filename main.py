@@ -18,11 +18,11 @@ MIN_SAMPLES    = 3
 MAX_MATCH_DIST = 10.0
 EDGE_PAIR_DIST = 20.0   # max distance to consider ON/OFF edges same object
 DISP_THRESH    = 1.0
-CAMERA_PATH = 0
 VIDEO_PATH = "DVD logo.mp4" #type filename or 0 or CAMERA_PATH for camera
 
 # --- Camera setup ---
-cam = cv2.VideoCapture(0) 
+cam = cv2.VideoCapture(0) #camera
+#cam = cv2.VideoCapture(VIDEO_PATH) #video 
 cam.set(cv2.CAP_PROP_FRAME_WIDTH,  320)
 cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
 centroids = np.zeros((48, 64), dtype=np.uint8)
@@ -132,10 +132,10 @@ while True:
     if(NEUROMORPHIC):
         on_core, on_border, on_b = dbscan.run(on_pts)
         on_mask = (on_core | on_border)
-        on_centroids = get_clusters(on_mask,on_b,MIN_SAMPLES)
+        on_centroids = get_clusters(on_mask,1,MIN_SAMPLES)
         off_core, off_border, off_b = dbscan.run(off_pts)
         off_mask = (off_core | off_border)
-        off_centroids = get_clusters(off_mask,off_b,MIN_SAMPLES)
+        off_centroids = get_clusters(off_mask,1,MIN_SAMPLES)
         cv2.imshow("neuromorphic mask",cv2.resize(127+(127*on_mask)-(127*off_mask),(320, 240), interpolation=cv2.INTER_NEAREST))
     else:
         traditional_mask.fill(0)
