@@ -22,7 +22,7 @@ CAMERA_PATH = 0
 VIDEO_PATH = "DVD logo.mp4" #type filename or 0 or CAMERA_PATH for camera
 
 # --- Camera setup ---
-cam = cv2.VideoCapture(VIDEO_PATH) 
+cam = cv2.VideoCapture(0) 
 cam.set(cv2.CAP_PROP_FRAME_WIDTH,  320)
 cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
 centroids = np.zeros((48, 64), dtype=np.uint8)
@@ -110,9 +110,9 @@ def describe_motion(motion): #determine plane of motion; actual motion depends o
     if (motion[0]*motion[0] + motion[1]*motion[1]) > DISP_THRESH*DISP_THRESH:
         if motion[1]==0: return "⇑⇓" #avoid divide by 0
         angle = atan(motion[0]/motion[1])
-        if abs(angle) < pi/8: return "⇐⇒"
-        if (angle >= pi/8) and (angle < 3*pi/8): return "⇖⇘"
-        if (angle <= -pi/8) and (angle > -3*pi/8): return "⇙⇗"
+        if abs(angle) < pi/6: return "⇐⇒"
+        if (angle >= pi/6) and (angle < pi/3): return "⇖⇘"
+        if (angle <= -pi/6) and (angle > -pi/3): return "⇙⇗"
         return "⇑⇓"
     return None
 
